@@ -1,5 +1,7 @@
 #include "stm8s.h"
 #include "milis.h"
+#include "stm8_hd44780.h"
+#include "stdio.h"
 
 //#include "delay.h"
 //#include <stdio.h>
@@ -29,24 +31,41 @@ void setup(void)
     //init_uart1();
 }
 
-
-int main(void)
-{
+int main(void){
     uint32_t time = 0;
+    uint8_t text [16];
+    uint8_t cislo = 0;
 
     setup();
+    /*init_uart();*/
+
+    lcd_init();
+
+    lcd_gotoxy(0, 0);
+    lcd_puts("Funguje to");
+    lcd_gotoxy(0, 1);
+    sprintf(text, "Count = %d ", cislo);
+    lcd_puts(text);
+    
+    
+
+   
 
     while (1) {
 
-        if (milis() - time > 333 && !BTN_PUSH) {
-            LED_REVERSE; 
+     if (milis() - time > 333 && BTN_PUSH) {
+            cislo=cislo+1;
+            lcd_gotoxy(0, 1);
+            sprintf(text, "Count = %d ", cislo);
+            lcd_puts(text);
             time = milis();
-            //printf("%ld\n", time);
-        }
+    
 
-        //LED_REVERSE; 
-        //delay_ms(333);
-        //printf("Funguje to!!!\n");
+        }   
+
+        /*LED_FLIP; */
+        /*_delay_ms(333);*/
+        /*printf("Funguje to!!!\n");*/
     }
 }
 
